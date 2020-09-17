@@ -41,6 +41,18 @@
             android:layout_below="@+id/textName"
             android:layout_toEndOf="@id/imageView">
         </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textInstruction"
+            android:text="Instruction"
+            android:textSize="10sp"
+            android:textStyle="italic"
+            android:layout_below="@+id/textDescription"
+            android:layout_toEndOf="@id/imageView"
+            android:visibility="gone">
+        </TextView>
     </RelativeLayout>
 
 
