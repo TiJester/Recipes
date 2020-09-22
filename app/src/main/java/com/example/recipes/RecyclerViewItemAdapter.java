@@ -1,5 +1,6 @@
 package com.example.recipes;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,15 @@ import java.util.ArrayList;
 
 public class RecyclerViewItemAdapter extends RecyclerView.Adapter<RecyclerViewItemAdapter.RecyclerViewViewHolder> {
 
-    public static class RecyclerViewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{ // Кастомный класс
+    ArrayList<RecyclerViewItem> arrayList;
+    Context context;
+
+    public RecyclerViewItemAdapter(ArrayList<RecyclerViewItem> arrayList, Context context){
+        this.arrayList = arrayList;
+        this.context = context;
+    }
+
+    public class RecyclerViewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{ // Кастомный класс
 
         public ImageView imageView;
         public TextView textView1;
@@ -23,6 +32,8 @@ public class RecyclerViewItemAdapter extends RecyclerView.Adapter<RecyclerViewIt
 
         public RecyclerViewViewHolder(@NonNull View itemView) { // Связываем поля с разметкой
             super(itemView);
+            itemView.setOnClickListener(this);
+
             imageView = itemView.findViewById(R.id.imageView);
             textView1 = itemView.findViewById(R.id.textName);
             textView2 = itemView.findViewById(R.id.textDescription);
@@ -32,18 +43,23 @@ public class RecyclerViewItemAdapter extends RecyclerView.Adapter<RecyclerViewIt
         @Override
         public void onClick(View view) {
 
+            int position = getAdapterPosition();
+            RecyclerViewItem recyclerViewItem = arrayList.get(position);
+
+            Intent intent = new Intent(context, Recipes_activity.class);
+
+            intent.putExtra("imageResource", recyclerViewItem.getImageResource());
+            intent.putExtra("textName", recyclerViewItem.getTextName());
+            intent.putExtra("textDescription", recyclerViewItem.getTextDescription());
+            intent.putExtra("textInstruction", recyclerViewItem.getTextInstruction());
+            context.startActivity(intent);
+
         }
     }
 
-    private ArrayList<RecyclerViewItem> arrayList;
-
-    public RecyclerViewItemAdapter(ArrayList<RecyclerViewItem> arrayList){
-        this.arrayList = arrayList;
-    }
     @NonNull
     @Override
     public RecyclerViewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { // передача разметки
-        // return null;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item,
                 parent, false);
         RecyclerViewViewHolder recyclerViewViewHolder = new RecyclerViewViewHolder(view);
